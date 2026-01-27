@@ -151,6 +151,25 @@ class AudioController {
         this.playTone(300, 'sawtooth', 0.5, 0.2);
         setTimeout(() => this.playTone(200, 'sawtooth', 0.5, 0.2), 300);
     }
+
+    playScheduledTone(freq, type, time, duration) {
+        if (!this.enabled || !this.ctx) return;
+        try {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = type;
+            osc.frequency.value = freq;
+
+            gain.gain.setValueAtTime(0, time);
+            gain.gain.linearRampToValueAtTime(0.2, time + 0.01);
+            gain.gain.exponentialRampToValueAtTime(0.001, time + duration);
+
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(time);
+            osc.stop(time + duration);
+        } catch (e) { }
+    }
 }
 
 /**
@@ -172,13 +191,18 @@ class Renderer {
         this.width = parent.clientWidth;
         this.height = parent.clientHeight;
 
+        // Add bottom padding for mobile browsers
+        // 1cm is approx 38px, but 50px is safer for various behaviors
+        const BOTTOM_PADDING = 50;
+        const availableHeight = Math.max(0, this.height - BOTTOM_PADDING);
+
         // We maintain aspect ratio of 10x20 in terms of "Game Units"
         // But we want the canvas to fill the screen.
         // Let's decide: blockSize determines the game world scale.
         // We fit 10 blocks wide or 20 blocks high, whichever is tighter.
 
         const possibleBlockByWidth = this.width / 10;
-        const possibleBlockByHeight = this.height / 20;
+        const possibleBlockByHeight = availableHeight / 20;
 
         this.blockSize = Math.min(possibleBlockByWidth, possibleBlockByHeight);
 
@@ -187,7 +211,9 @@ class Renderer {
 
         // Output properties for Physics to know boundaries
         this.gameOriginX = (this.width - (10 * this.blockSize)) / 2;
-        this.gameOriginY = (this.height - (20 * this.blockSize)) / 2;
+        // Center vertically in the AVAILABLE height (top-biased), then maybe offset slightly?
+        // Actually centering in availableHeight keeps it off the very bottom.
+        this.gameOriginY = (availableHeight - (20 * this.blockSize)) / 2;
     }
 
     clear() {
