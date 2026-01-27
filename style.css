@@ -1,0 +1,136 @@
+:root {
+    --bg-color: #0a0a12;
+    --grid-color: rgba(255, 255, 255, 0.05);
+    --ui-text-color: #ffffff;
+    --neon-blue: #00f0f0;
+    --neon-pink: #f000f0;
+    --glass-bg: rgba(255, 255, 255, 0.1);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    touch-action: none;
+    /* Prevent browser zooming/scrolling */
+    user-select: none;
+    -webkit-user-select: none;
+    font-family: 'Outfit', sans-serif;
+}
+
+body {
+    background-color: #121212;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    color: var(--ui-text-color);
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#game-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    /* Remove max-width constraint to let canvas fill screen for mobile feel */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Transparent so body background shows through for the "Outside" area */
+    background: transparent;
+    box-shadow: none;
+}
+
+canvas {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    /* Border is drawn by renderer, but we add a glow here */
+    box-shadow: 0 0 20px rgba(0, 240, 240, 0.2);
+}
+
+#ui-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    /* Let touches pass through to canvas generally */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+#score-display {
+    font-size: 2rem;
+    font-weight: bold;
+    text-shadow: 0 0 10px var(--neon-blue);
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+#start-screen,
+#game-over-screen {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    pointer-events: auto;
+    /* Re-enable clicks for buttons */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+    width: 80%;
+    max-width: 400px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 20px rgba(0, 240, 240, 0.5);
+}
+
+p {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    opacity: 0.8;
+}
+
+button {
+    margin-top: 20px;
+    padding: 15px 40px;
+    font-size: 1.5rem;
+    background: linear-gradient(45deg, var(--neon-blue), #00a0a0);
+    border: none;
+    border-radius: 50px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 0 20px rgba(0, 240, 240, 0.4);
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+button:active {
+    transform: scale(0.95);
+    box-shadow: 0 0 10px rgba(0, 240, 240, 0.2);
+}

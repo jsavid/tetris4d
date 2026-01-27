@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tetris 4D</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div id="game-container">
+        <canvas id="game-canvas"></canvas>
+        <button id="pause-btn" style="position: absolute; top: 20px; right: 20px; z-index: 100;">⏸</button>
+        <div id="ui-overlay">
+            <div id="score-display">0</div>
+            <div id="start-screen">
+                <h1>TETRIS 4D</h1>
+                <button id="start-btn">JUGAR</button>
+            </div>
+            <div id="game-over-screen" class="hidden">
+                <h1>GAME OVER</h1>
+                <p>Score: <span id="final-score">0</span></p>
+                <button id="restart-btn">TRY AGAIN</button>
+            </div>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+
+</html>
